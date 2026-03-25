@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verb Helper Challenge Set 1 – Ultimate Theme</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+
+    :root{
+      --bg0:#05080f;
+      --bg1:#070c16;
+      --bg2:#0b1326;
+      --card:#0f1a33;
+      --card2:#0c162c;
+      --stroke: rgba(255,255,255,.10);
+      --stroke2: rgba(255,255,255,.16);
+
+      --ink:#f8fafc;
+      --muted: rgba(248,250,252,.76);
+
+      --yellow:#ffe45c; /* lemon */
+      --green:#22c55e;
+      --green2:#16a34a;
+      --cyan:#34d399;
+      --hot:#f59e0b;
+
+      --bad:#ef4444;
+      --shadow: rgba(0,0,0,.45);
+    }
+*{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:
+        radial-gradient(1100px 700px at 15% 10%, rgba(34,197,94,.14) 0%, rgba(255,228,92,.08) 45%, rgba(5,8,15,1) 100%),
+        radial-gradient(900px 700px at 80% 65%, rgba(255,228,92,.10) 0%, rgba(5,8,15,1) 70%),
+        linear-gradient(180deg, var(--bg0), var(--bg2));
+      overflow:hidden;
+      color:var(--ink);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* TV: prefer crisp, bold, large */
+    @media (min-width: 1100px){
+      body{ letter-spacing: .2px; }
+    }
+
+    .sparkles{ position:fixed; inset:0; pointer-events:none; opacity:.8; }
+    .sparkles i{
+      position:absolute;
+      width:7px;height:7px;border-radius:50%;
+      background: rgba(255,228,92,.95);
+      box-shadow: 0 0 14px rgba(255,228,92,.65);
+      animation: twinkle 2.6s ease-in-out infinite;
+    }
+    .sparkles i:nth-child(3n){
+      background: rgba(34,197,94,.95);
+      box-shadow: 0 0 14px rgba(34,197,94,.55);
+    }
+    @keyframes twinkle{
+      0%,100%{ transform: scale(.6); opacity:.25 }
+      50%{ transform: scale(1.4); opacity:1 }
+    }
+
+    .bg-bubbles{ position:fixed; inset:0; pointer-events:none; opacity:.45; filter: blur(.2px); }
+    .bg-bubbles span{
+      position:absolute; width:22px; height:22px; border-radius:50%;
+      background: rgba(34,197,94,.10);
+      border: 1px solid rgba(34,197,94,.10);
+      animation: floatUp linear infinite;
+    }
+    .bg-bubbles span:nth-child(odd){
+      background: rgba(255,228,92,.08);
+      border-color: rgba(255,228,92,.10);
+    }
+    @keyframes floatUp{
+      0%{ transform: translateY(30vh) scale(.9); opacity:0}
+      10%{opacity:1}
+      100%{ transform: translateY(-120vh) scale(1.2); opacity:0}
+    }
+
+    .screen{
+      width: 100vw;
+      height: 100dvh;
+      min-height: 100vh;
+      background: linear-gradient(180deg, rgba(15,26,51,.96), rgba(12,22,44,.92));
+      border: 1px solid var(--stroke);
+      border-radius: 0px;
+      padding: clamp(10px, 1.2vw, 16px);
+      box-shadow: 0 26px 80px var(--shadow);
+      display:none;
+      position:relative;
+      backdrop-filter: blur(10px);
+      overflow-y:auto;
+      overflow-x:hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screen.active{display:block}
+
+    .screen::before{
+      content:"";
+      position:absolute; inset:-2px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(34,197,94,.28), rgba(255,228,92,.18), rgba(34,197,94,.22));
+      filter: blur(16px);
+      opacity:.70;
+      z-index:-1;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      top: 14px;
+      transform: translateX(-50%);
+      background: rgba(8,13,25,.92);
+      color: var(--yellow);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 1000;
+      font-size: 14px;
+      border: 1px solid rgba(255,228,92,.22);
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index: 80;
+    }
+    .toast.show{
+      opacity:1;
+      transform: translateX(-50%) translateY(2px);
+    }
+
+    .brand{ display:flex; align-items:center; justify-content:center; gap:12px; margin-top:4px; }
+    .badge{
+      width:56px;height:56px;border-radius:18px;
+      background: linear-gradient(135deg, rgba(255,228,92,.22), rgba(34,197,94,.22));
+      display:grid;place-items:center;
+      color: var(--yellow);
+      font-weight:1000;
+      border: 1px solid rgba(255,228,92,.25);
+      box-shadow: 0 14px 30px rgba(0,0,0,.25);
+      letter-spacing:.9px;
+      position:relative;
+      overflow:hidden;
+    }
+    .badge::after{
+      content:"";
+      position:absolute; inset:-20px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+      transform: rotate(10deg);
+      opacity:.7;
+    }
+
+    .heroTitle{
+      text-align:center;
+      margin: 10px 0 4px;
+      font-size: clamp(30px, 4.2vw, 52px);
+      font-weight: 1000;
+      letter-spacing: .6px;
+      line-height: 1.05;
+      text-shadow: 0 10px 30px rgba(124,58,237,.16);
+    }
+    .heroTitle .glow{
+      background: linear-gradient(135deg, var(--yellow), #b8ff8a, var(--green), var(--yellow));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
+      animation: hue 5s linear infinite;
+    }
+    @keyframes hue{
+      0%{ filter: drop-shadow(0 12px 18px rgba(124,58,237,.12)) hue-rotate(0deg); }
+      100%{ filter: drop-shadow(0 12px 18px rgba(124,58,237,.12)) hue-rotate(360deg); }
+    }
+
+    .subtitle{
+      text-align:center;
+      margin:0 0 14px;
+      color: var(--muted);
+      font-size: clamp(14px, 1.6vw, 20px);
+      line-height:1.45;
+      font-weight: 900;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(15,26,51,.92), rgba(12,22,44,.92));
+      border: 1px solid var(--stroke);
+      border-radius: 20px;
+      padding: clamp(12px, 1.8vw, 20px);
+      box-shadow: 0 14px 34px rgba(0,0,0,.25);
+    }
+
+    input{
+      width:100%;
+      padding: 16px 16px;
+      font-size: clamp(18px, 1.6vw, 24px);
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      outline:none;
+      background: rgba(5,8,15,.55);
+      color: var(--ink);
+      font-weight: 900;
+    }
+    input::placeholder{ color: rgba(248,250,252,.55); font-weight: 800; }
+    input:focus{ border-color: rgba(255,228,92,.55); box-shadow: 0 0 0 6px rgba(255,228,92,.14); }
+
+    .btn{
+      width:100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: none;
+      cursor: pointer;
+      font-weight: 1000;
+      font-size: clamp(18px, 1.8vw, 24px);
+      color:#08111f;
+      background: linear-gradient(135deg, var(--yellow), #b8ff8a, var(--green));
+      box-shadow: 0 18px 36px rgba(0,0,0,.32);
+      transform: translateY(0);
+      transition: transform .12s ease, filter .12s ease;
+      margin-top: 12px;
+    }
+    .btn:active{ transform: translateY(2px); filter: brightness(.98); }
+    .btn.secondary{
+      color: var(--yellow);
+      background: linear-gradient(135deg, rgba(8,13,25,1), rgba(15,26,51,1));
+      border: 1px solid rgba(255,228,92,.22);
+      box-shadow: 0 18px 36px rgba(0,0,0,.32);
+    }
+
+    .topbar{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      margin-bottom: 6px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      flex:1 1 170px;
+      background: linear-gradient(180deg, rgba(8,13,25,.65), rgba(15,26,51,.55));
+      border: 1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 8px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow: 0 12px 24px rgba(0,0,0,.26);
+      font-size: clamp(14px, 1.2vw, 18px);
+      font-weight: 1000;
+      color: var(--muted);
+    }
+    .chip strong{font-size: clamp(16px, 1.4vw, 22px); color: var(--ink);}
+    .stage-pill{ display:inline-flex; gap:8px; align-items:center; font-weight:1000; color: var(--yellow); }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: var(--green);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.18);
+    }
+
+    .arena{ display:flex; flex-direction:column; gap:10px; min-height:0; }
+
+    .sentenceBox{
+      background: linear-gradient(180deg, rgba(8,13,25,.75), rgba(12,22,44,.75));
+      border: 1px solid rgba(255,228,92,.22);
+      border-radius: 20px;
+      padding: clamp(16px, 2.2vw, 26px);
+      min-height: clamp(130px, 18vh, 220px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      font-size: clamp(28px, 3.2vw, 52px);
+      font-weight:1000;
+      line-height: 1.20;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      color: var(--yellow);
+      text-shadow: 0 12px 26px rgba(0,0,0,.35);
+    }
+
+    .underlineWord{
+      text-decoration: underline;
+      text-decoration-thickness: .18em;
+      text-underline-offset: .22em;
+      text-decoration-color: rgba(255,228,92,.95);
+      font-weight: 1000;
+    }
+
+    .bottomBar{
+      margin-top: 4px;
+      padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
+    }
+    .orbRow{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      padding: 8px 0 4px;
+    }
+    .orb{
+      width: clamp(90px, 8vw, 130px);
+      height: clamp(90px, 8vw, 130px);
+      font-size: clamp(24px, 2.5vw, 38px);
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.16), rgba(255,255,255,0) 58%),
+        linear-gradient(135deg, rgba(8,13,25,1), rgba(15,26,51,1));
+      border: 1px solid rgba(255,228,92,.28);
+      box-shadow: 0 16px 34px rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 1000;
+      color: var(--yellow);
+      letter-spacing:.4px;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+      animation: wiggle 1.8s ease-in-out infinite;
+      text-shadow: 0 2px 0 rgba(0,0,0,.35);
+    }
+    .orb:nth-child(2n){ animation-duration: 2.2s; }
+    .orb:nth-child(3n){ animation-duration: 2.6s; }
+    .orb:active{ transform: translateY(2px); filter: brightness(.98); }
+.orb:hover{
+  transform: scale(1.1);
+  box-shadow:
+  0 0 20px rgba(255,228,92,.8),
+  0 0 40px rgba(34,197,94,.6);
+}
+    .orb.disabled{ opacity:.45; pointer-events:none; }
+    .orb.fall{ transform: translateY(60px) rotate(8deg); opacity:0; pointer-events:none; }
+    @keyframes wiggle{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-4px) }
+    }
+
+    
+    .orbRow.sky{
+      position: relative;
+      min-height: 180px;
+      align-items: flex-start;
+      overflow: hidden;
+      padding-top: 6px;
+    }
+    .orb.skyOrb{
+      animation: dropIn .7s cubic-bezier(.18,.9,.2,1) forwards, wiggle 2s ease-in-out infinite .7s;
+      opacity: 0;
+      transform: translateY(-120px) scale(.8);
+    }
+    @keyframes dropIn{
+      0%{ opacity:0; transform: translateY(-120px) scale(.75);}
+      70%{ opacity:1; transform: translateY(10px) scale(1.06);}
+      100%{ opacity:1; transform: translateY(0px) scale(1);}
+    }
+
+    .ccRow{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .ccBtn{
+      flex:1 1 220px;
+      padding: 14px 14px;
+      border-radius: 18px;
+      border:none;
+      cursor:pointer;
+      font-weight:1000;
+      font-size: clamp(18px, 1.8vw, 24px);
+      color:#fff;
+      box-shadow: 0 16px 30px rgba(11,18,32,.12);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .ccBtn:active{ transform: translateY(2px); filter: brightness(.98); }
+    .ccCorrect{ background: linear-gradient(135deg, var(--green), var(--green2)); color:#08111f;}
+    .ccChange{ background: linear-gradient(135deg, var(--yellow), #fbbf24); color:#08111f;}
+    .ccBtn:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+
+    .ribbons{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .ribbons i{
+      position:absolute;
+      width:10px; height:18px;
+      border-radius: 8px;
+      background: rgba(244,114,182,.95);
+      animation: drop 1200ms ease-out forwards;
+      opacity:.95;
+    }
+    .ribbons i:nth-child(3n){ background: rgba(168,85,247,.95); }
+    .ribbons i:nth-child(4n){
+      background: rgba(255,255,255,.95);
+      border: 1px solid rgba(11,18,32,.1);
+    }
+    @keyframes drop{
+      0%{ transform: translateY(-40px) rotate(0deg); opacity:0}
+      20%{ opacity:1 }
+      100%{ transform: translateY(260px) rotate(220deg); opacity:0 }
+    }
+
+    .bigScore{
+      font-size: clamp(54px, 4.6vw, 84px);
+      font-weight: 1000;
+      text-align:center;
+      margin: 10px 0 2px;
+      color: var(--yellow);
+      text-shadow: 0 18px 44px rgba(0,0,0,.35);
+    }
+    .summaryLine{
+      text-align:center;
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: clamp(16px, 1.6vw, 22px);
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 1000;
+      margin: 6px auto 0;
+      justify-content:center;
+      font-size: clamp(14px, 1.4vw, 18px);
+    }
+    .pill.pass{ background: rgba(34,197,94,.14); color: #b8ff8a; border:1px solid rgba(34,197,94,.30); }
+    .pill.fail{ background: rgba(239,68,68,.12); color: #fecaca; border:1px solid rgba(239,68,68,.28); }
+
+    .starsRow{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 8px;
+    }
+    .starBtn{
+      width: clamp(170px, 20vw, 240px);
+      border:none;
+      cursor:pointer;
+      padding: 16px 12px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(8,13,25,1), rgba(15,26,51,1));
+      border: 1px solid rgba(255,228,92,.25);
+      box-shadow: 0 18px 36px rgba(0,0,0,.35);
+      font-weight: 1000;
+      font-size: clamp(18px, 1.6vw, 22px);
+      color: var(--yellow);
+    }
+    .starIcon{
+      font-size: 34px;
+      display:block;
+      margin-bottom: 6px;
+    }
+
+    .miniRow{ display:flex; gap:10px; flex-wrap:wrap; }
+    .miniBtn{
+      flex:1 1 180px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,228,92,.22);
+      background: linear-gradient(180deg, rgba(8,13,25,.70), rgba(15,26,51,.55));
+      cursor: pointer;
+      font-weight: 1000;
+      color: var(--yellow);
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      transition: transform .12s ease;
+    }
+    .miniBtn:active{ transform: translateY(2px); }
+
+    /* Final summary panel rows */
+    
+    .howtoList{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .howtoBox{
+      background: linear-gradient(180deg, rgba(8,13,25,.70), rgba(15,26,51,.58));
+      border: 1px solid rgba(255,228,92,.22);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+    }
+    .howtoBox h3{
+      margin:0 0 8px;
+      font-size: clamp(18px, 1.8vw, 24px);
+      color: var(--yellow);
+    }
+    .howtoBox p{
+      margin:0;
+      color: var(--ink);
+      font-weight: 800;
+      line-height: 1.5;
+      font-size: clamp(14px, 1.3vw, 18px);
+    }
+    .goalBanner{
+      margin-top: 12px;
+      text-align:center;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,228,92,.18), rgba(34,197,94,.18));
+      border: 1px solid rgba(255,228,92,.22);
+      color: var(--ink);
+      font-weight:1000;
+      font-size: clamp(15px, 1.5vw, 20px);
+    }
+    .comboBadge{
+      position: fixed;
+      left: 50%;
+      top: 70px;
+      transform: translateX(-50%) scale(.8);
+      background: linear-gradient(135deg, rgba(255,228,92,.95), rgba(34,197,94,.95));
+      color:#071018;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 1000;
+      font-size: clamp(18px, 2vw, 30px);
+      box-shadow: 0 16px 34px rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      z-index:120;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .comboBadge.show{
+      opacity:1;
+      transform: translateX(-50%) scale(1);
+    }
+    .megaConfetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:200;
+    }
+    .megaConfetti i{
+      position:absolute;
+      top:-20px;
+      width: 10px;
+      height: 18px;
+      border-radius: 8px;
+      opacity: .96;
+      animation: megaDrop linear forwards;
+    }
+    @keyframes megaDrop{
+      0%{ transform: translateY(-30px) rotate(0deg); opacity:0; }
+      10%{ opacity:1; }
+      100%{ transform: translateY(110vh) rotate(720deg); opacity:.95; }
+    }
+    .certificate{
+      position: relative;
+      padding: clamp(18px, 2vw, 28px);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.92), rgba(250,253,242,.96)),
+        linear-gradient(135deg, rgba(255,228,92,.20), rgba(34,197,94,.15));
+      color:#17212f;
+      border: 8px double rgba(255,228,92,.75);
+      box-shadow: 0 30px 70px rgba(0,0,0,.35), inset 0 0 0 2px rgba(34,197,94,.18);
+      overflow:hidden;
+    }
+    .certificate::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255,228,92,.18), transparent 28%),
+        radial-gradient(circle at 84% 22%, rgba(34,197,94,.12), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(255,228,92,.10), transparent 32%);
+      pointer-events:none;
+    }
+    .certTop{text-align:center;position:relative;z-index:1;}
+    .certSeal{
+      width:92px;height:92px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;
+      background: linear-gradient(135deg, #ffe45c, #b8ff8a, #22c55e);color:#08111f;font-size:42px;font-weight:1000;
+      box-shadow:0 18px 34px rgba(0,0,0,.22);border:4px solid rgba(255,255,255,.7);
+    }
+    .certTitle{font-size: clamp(30px, 3.2vw, 52px);font-weight:1000;letter-spacing:.8px;color:#0f172a;margin-bottom:4px;}
+    .certSub{font-size: clamp(15px, 1.5vw, 22px);font-weight:900;color:#3b4758;margin-bottom:14px;}
+    .certPlayer{font-size: clamp(22px, 2.2vw, 34px);font-weight:1000;color:#14532d;margin:10px 0 14px;text-align:center;position:relative;z-index:1;}
+    .certBigScore{text-align:center;font-size: clamp(54px, 5vw, 88px);font-weight:1000;color:#b45309;text-shadow: 0 6px 16px rgba(0,0,0,.12);margin:6px 0 0;position:relative;z-index:1;}
+    .certMini{text-align:center;font-size: clamp(16px, 1.4vw, 20px);font-weight:900;color:#475569;margin-bottom:14px;position:relative;z-index:1;}
+    .certGrid{display:grid;grid-template-columns: repeat(4, minmax(0,1fr));gap:12px;margin-top:12px;position:relative;z-index:1;}
+    .certStat{background: rgba(255,255,255,.85);border: 2px solid rgba(255,228,92,.65);border-radius:18px;padding:14px 10px;text-align:center;box-shadow:0 12px 22px rgba(0,0,0,.08);}
+    .certStat .k{font-weight:1000;font-size: clamp(14px, 1.2vw, 18px);color:#475569;margin-bottom:6px;}
+    .certStat .v{font-weight:1000;font-size: clamp(24px, 2vw, 34px);color:#0f172a;}
+    .certPass{margin:16px auto 8px;width:fit-content;padding:12px 22px;border-radius:999px;font-weight:1000;font-size: clamp(18px, 1.8vw, 26px);position:relative;z-index:1;}
+    .certPass.pass{background: rgba(34,197,94,.18);color:#166534;border:2px solid rgba(34,197,94,.45);}
+    .certPass.fail{background: rgba(239,68,68,.14);color:#991b1b;border:2px solid rgba(239,68,68,.35);}
+    .certFooter{text-align:center;margin-top:16px;color:#475569;font-weight:900;font-size: clamp(13px, 1.2vw, 17px);position:relative;z-index:1;}
+    @media (max-width: 768px){
+      body{align-items:flex-start;overflow:auto;}
+      .screen{height:100dvh;min-height:100vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:10px 10px 18px;}
+      .arena{height:auto;min-height:0;}
+      .chip{flex:1 1 calc(50% - 8px);min-height:46px;padding:8px 10px;font-size:13px;}
+      .chip strong{font-size:17px;}
+      .heroTitle{font-size: clamp(24px, 7vw, 34px);margin-top:6px;}
+      .subtitle{font-size: clamp(12px, 3.5vw, 16px);line-height:1.35;margin-bottom:10px;}
+      .card{padding:12px;border-radius:16px;}
+      .sentenceBox{min-height:110px;padding:14px 12px;font-size: clamp(20px, 5.6vw, 30px);line-height:1.22;}
+      .orb{width: clamp(68px, 20vw, 88px);height: clamp(68px, 20vw, 88px);font-size: clamp(20px, 5vw, 28px);}
+      .howtoList{grid-template-columns: 1fr;gap:10px;}
+      .orbRow.sky{min-height:132px;gap:8px;}
+      .certificate{padding:14px 12px 18px;border-width:5px;border-radius:20px;}
+      .certGrid{grid-template-columns: repeat(2, minmax(0,1fr));gap:8px;}
+      .comboBadge{top:58px;width:calc(100vw - 28px);text-align:center;font-size: clamp(16px, 4vw, 22px);padding:10px 12px;}
+    }
+    @media (max-width: 420px){
+      .chip{flex:1 1 100%;}
+      .orbRow.sky{min-height:118px;}
+      .orb{width:64px;height:64px;font-size:18px;}
+      .sentenceBox{font-size: clamp(18px, 5.4vw, 24px);}
+      .certGrid{grid-template-columns: repeat(2, minmax(0,1fr));}
+    }
+
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 640px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+    .statCard{
+      border:1px solid var(--stroke);
+      border-radius: 18px;
+      padding: 12px;
+      background: linear-gradient(180deg, rgba(8,13,25,.65), rgba(15,26,51,.55));
+      box-shadow: 0 12px 24px rgba(0,0,0,.22);
+      text-align:center;
+      color: var(--ink);
+    }
+    .statCard .t{ font-weight:1000; color: var(--muted); margin-bottom:6px; }
+    .statCard .v{ font-weight:1000; font-size: clamp(20px, 2.2vw, 30px); color: var(--yellow);}
+  
+
+.flash{
+animation: flashWin 0.4s;
+}
+@keyframes flashWin{
+0%{background:#22c55e;}
+100%{background:transparent;}
+}
+</style>
+
+</head>
+<body>
+
+<div class="sparkles" aria-hidden="true">
+  <i style="left:12%; top:14%; animation-delay:0s"></i>
+  <i style="left:22%; top:30%; animation-delay:.6s"></i>
+  <i style="left:38%; top:18%; animation-delay:1.2s"></i>
+  <i style="left:54%; top:10%; animation-delay:.3s"></i>
+  <i style="left:72%; top:24%; animation-delay:1.6s"></i>
+  <i style="left:84%; top:12%; animation-delay:.9s"></i>
+  <i style="left:18%; top:72%; animation-delay:1.1s"></i>
+  <i style="left:46%; top:78%; animation-delay:.5s"></i>
+  <i style="left:66%; top:70%; animation-delay:1.9s"></i>
+  <i style="left:86%; top:78%; animation-delay:1.4s"></i>
+</div>
+
+<div class="bg-bubbles" aria-hidden="true">
+  <span style="left:10%; animation-duration: 9s; animation-delay: 0s;"></span>
+  <span style="left:20%; width:14px;height:14px; animation-duration: 11s; animation-delay: 1s;"></span>
+  <span style="left:35%; width:18px;height:18px; animation-duration: 10s; animation-delay: 2s;"></span>
+  <span style="left:50%; width:12px;height:12px; animation-duration: 13s; animation-delay: 0.5s;"></span>
+  <span style="left:65%; width:26px;height:26px; animation-duration: 12s; animation-delay: 1.2s;"></span>
+  <span style="left:78%; width:16px;height:16px; animation-duration: 9.5s; animation-delay: 2.2s;"></span>
+  <span style="left:88%; width:20px;height:20px; animation-duration: 14s; animation-delay: 0.8s;"></span>
+</div>
+
+<div id="toast" class="toast">Ready!</div>
+<div id="comboBadge" class="comboBadge">COMBO x5 +2</div>
+<div id="megaConfetti" class="megaConfetti" aria-hidden="true"></div>
+
+<!-- START -->
+<section id="startScreen" class="screen active">
+  <div class="brand"><div class="badge">KP</div></div>
+  <div class="heroTitle"><span class="glow">VERB HELPER</span><br/>SET 1</div>
+  <div class="subtitle">
+    🎯 Stage 1: choose the correct helper verb<br/>
+    ✅ Stage 2: decide <b>Correct</b> or <b>Change</b><br/>
+    🔥 Every <b>5 correct in a row</b> = <b>+2 bonus</b><br/>
+    🏆 Accuracy <b>80%+</b> = celebration certificate
+  </div>
+
+  <div class="card">
+    <div style="font-weight:1000; margin-bottom:8px; font-size: clamp(14px,1.4vw,18px);">Player Name</div>
+    <input id="playerNameInput" type="text" placeholder="Type your name..." />
+
+    <div class="miniRow" style="margin-top:12px;">
+      <button class="miniBtn" onclick="toggleSound()" id="soundBtn">🔊 Sound: ON</button>
+      <button class="miniBtn" onclick="toggleBGM()" id="bgmBtn">🛸 BGM: ON</button>
+    </div>
+
+    <button class="btn secondary" onclick="openHowTo()">📘 HOW TO PLAY</button>
+    <button class="btn" onclick="startGame()">🚀 START MISSION</button>
+  </div>
+</section>
+
+
+<!-- HOW TO PLAY -->
+<section id="howToScreen" class="screen">
+  <div class="brand"><div class="badge">KP</div></div>
+  <div class="heroTitle"><span class="glow">HOW TO</span><br/>PLAY</div>
+  <div class="subtitle">ฝึกก่อนเล่นจริง เด็กจะเข้าใจเป้าหมายของเกมมากขึ้น ✨</div>
+  <div class="card">
+    <div class="howtoList">
+      <div class="howtoBox">
+        <h3>🎯 What do you practice?</h3>
+        <p>This game helps students practice helper verbs: <b>is, am, are, do, does, did, has, have</b> in real sentence patterns.</p>
+      </div>
+      <div class="howtoBox">
+        <h3>🕹️ Stage 1</h3>
+        <p>Read the sentence and tap the correct helper verb. Each correct answer gives <b>+1</b>.</p>
+      </div>
+      <div class="howtoBox">
+        <h3>✏️ Stage 2</h3>
+        <p>Choose <b>Correct</b> or <b>Change</b>. If the sentence is wrong, fix it with the correct helper verb.</p>
+      </div>
+      <div class="howtoBox">
+        <h3>🔥 Bonus & Pass Rule</h3>
+        <p>Every <b>5 correct in a row</b> gives <b>+2 bonus</b>. Accuracy <b>80%+</b> unlocks the celebration certificate.</p>
+      </div>
+    </div>
+    <div class="goalBanner">💡 Goal: train children to notice the subject, tense clue, and helper verb pattern quickly and accurately.</div>
+    <div class="miniRow" style="margin-top:14px;">
+      <button class="miniBtn" onclick="showScreen('startScreen')">⬅ Back</button>
+      <button class="miniBtn" onclick="startGame()">🚀 Start Mission</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- GAME -->
+<section id="gameScreen" class="screen">
+  <div class="topbar">
+    <div class="chip"><span>Player</span> <strong id="playerNameDisplay">-</strong></div>
+    <div class="chip">
+      <span class="stage-pill"><span class="dot"></span> <span id="stageDisplay">Stage 1</span></span>
+      <strong id="qDisplay">1/30</strong>
+    </div>
+    <div class="chip"><span>Correct</span> <strong id="correctDisplay">0</strong></div>
+    <div class="chip"><span>Wrong</span> <strong id="wrongDisplay">0</strong></div>
+    <div class="chip"><span>Bonus</span> <strong id="bonusDisplay">0</strong></div>
+    <div class="chip"><span>Total Score</span> <strong id="scoreDisplay">0</strong></div>
+  </div>
+
+  <div class="arena">
+    <div class="sentenceBox" id="sentenceBox">
+      ...
+      <div class="ribbons" id="ribbons"></div>
+    </div>
+
+    <div class="card">
+      <div id="stageHint" style="font-weight:1000; text-align:center; margin-bottom:10px; font-size: clamp(16px, 1.6vw, 20px);">
+        Choose the correct helper ✨
+      </div>
+
+      <div class="orbRow sky" id="orbRow"></div>
+
+      <div class="ccRow" id="ccRow" style="display:none;">
+        <button class="ccBtn ccCorrect" id="btnCorrect" onclick="chooseCorrect()">Correct ✅</button>
+        <button class="ccBtn ccChange" id="btnChange" onclick="chooseChange()">Change ✏️</button>
+      </div>
+
+      <div class="orbRow sky" id="changeRow" style="display:none;"></div>
+
+      <div class="miniRow" style="margin-top:12px;">
+        <button class="miniBtn" onclick="toggleSound()" id="soundBtn2">🔊 Sound: ON</button>
+        <button class="miniBtn" onclick="toggleBGM()" id="bgmBtn2">🛸 BGM: ON</button>
+      </div>
+
+      <button class="btn secondary" onclick="resetAll()">Back to Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- BONUS -->
+<section id="bonusScreen" class="screen">
+  <div class="heroTitle" style="margin-top:6px;"><span class="glow">PERFECT</span> 30/30 🌟</div>
+  <div class="subtitle">Pick 1 Mystery Star (bonus is hidden)</div>
+
+  <div class="card">
+    <div class="starsRow" id="starsRow"></div>
+    <div class="subtitle" style="margin-top:10px;">Only 1 pick 🙂</div>
+  </div>
+</section>
+
+<!-- STAGE SUMMARY (Stage 1 only, for pass/fail & go next) -->
+<section id="stageSummaryScreen" class="screen">
+  <div class="heroTitle" id="stageSummaryTitle" style="margin-top:6px;"><span class="glow">STAGE</span> SUMMARY</div>
+  <div class="subtitle" id="stageSummarySub">Check your result</div>
+
+  <div class="card">
+    <div class="summaryLine" id="stageSummaryName">-</div>
+    <div class="bigScore" id="stageSummaryScore">0</div>
+    <div class="summaryLine" id="stageSummaryCorrect">Correct: -</div>
+    <div id="stagePassBadge" style="display:flex; justify-content:center;"></div>
+
+    <button id="btnStageRetry" class="btn" onclick="restartCurrentStage()">Try Again</button>
+    <button id="btnStageNext" class="btn secondary" onclick="goNextStage()">Go to Stage 2</button>
+    <button class="btn secondary" onclick="resetAll()">Back to Home</button>
+  </div>
+</section>
+
+
+<!-- FINAL SUMMARY -->
+<section id="finalSummaryScreen" class="screen">
+  <div class="certificate">
+    <div class="certTop">
+      <div class="certSeal">🏆</div>
+      <div class="certTitle">Achievement Certificate</div>
+      <div class="certSub">Verb Helper Challenge • Set 1 • Kru Pai Classroom</div>
+    </div>
+    <div class="certPlayer" id="finalName">Awarded to: -</div>
+    <div class="certBigScore" id="finalTotalScore">0</div>
+    <div class="certMini" id="finalTotalCorrect">Mission Score Sheet • Correct -</div>
+    <div class="certGrid">
+      <div class="certStat"><div class="k">Correct</div><div class="v" id="certCorrect">0</div></div>
+      <div class="certStat"><div class="k">Wrong</div><div class="v" id="certWrong">0</div></div>
+      <div class="certStat"><div class="k">Bonus</div><div class="v" id="certBonus">0</div></div>
+      <div class="certStat"><div class="k">Accuracy</div><div class="v" id="certAccuracy">0%</div></div>
+    </div>
+    <div id="finalPassText" class="certPass pass">PASS ✅</div>
+    <div class="certGrid" style="margin-top:10px;">
+      <div class="certStat"><div class="k">Stage 1</div><div class="v" id="finalS1">-</div></div>
+      <div class="certStat"><div class="k">Stage 2</div><div class="v" id="finalS2">-</div></div>
+      <div class="certStat"><div class="k">Mission Score</div><div class="v" id="certMissionScore">0</div></div>
+      <div class="certStat"><div class="k">Result</div><div class="v" id="certResultWord">PASS</div></div>
+    </div>
+    <div class="certFooter" id="finalSub">Pass if overall accuracy is 80% or more</div>
+    <div class="miniRow" style="margin-top:18px; position:relative; z-index:1;">
+      <button class="miniBtn" onclick="replayStage2()">Replay Stage 2</button>
+      <button class="miniBtn" onclick="replayAll()">Replay All</button>
+      <button class="miniBtn" onclick="resetAll()">Back to Home</button>
+    </div>
+  </div>
+</section>
+
+
+<script>
+  // ======= Sentence formatting (fix glued words in Stage 2) =======
+  function normalizeSpaces(s){
+    return (s || '').replace(/\s+/g,' ').replace(/\s([,\.\!\?])/g,'$1').trim();
+  }
+  function formatSentence(template, wordHtml){
+    // force spaces around the inserted word then normalize
+    const raw = template.replace('___', ' ' + wordHtml + ' ');
+    return normalizeSpaces(raw);
+  }
+  // ===============================================================
+
+  /* ======================
+     AUDIO (WebAudio, no external files)
+  ====================== */
+  let soundOn = true;
+  let bgmOn = true;
+  let audioCtx = null;
+  let bgmTimer = null;
+
+  function ensureAudio(){
+    if(!audioCtx){
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if(audioCtx.state === "suspended"){
+      audioCtx.resume();
+    }
+  }
+
+  function tone(freq=440, dur=0.10, type="sine", gain=0.06){
+    if(!soundOn) return;
+    ensureAudio();
+    const t0 = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gain, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+
+    osc.connect(g);
+    g.connect(audioCtx.destination);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }
+
+  function sfxClick(){
+  tone(520,0.07,"triangle",0.05);
+  setTimeout(()=>tone(720,0.06,"triangle",0.05),60);
+}
+  function sfxCorrect(){
+    tone(784, 0.09, "sine", 0.06);
+    setTimeout(()=>tone(988, 0.10, "sine", 0.06), 90);
+    setTimeout(()=>tone(1175, 0.12, "sine", 0.06), 180);
+  }
+  function sfxWrong(){
+    tone(220, 0.14, "square", 0.05);
+    setTimeout(()=>tone(180, 0.16, "square", 0.05), 110);
+  }
+
+  function startBGM(){
+    if(!bgmOn) return;
+    ensureAudio();
+    stopBGM();
+    const seq = [220, 247, 294, 330, 294, 247];
+    let idx = 0;
+    bgmTimer = setInterval(()=>{
+      if(!bgmOn) return;
+      ensureAudio();
+      const t0 = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(seq[idx % seq.length], t0);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.02, t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.45);
+      osc.connect(g); g.connect(audioCtx.destination);
+      osc.start(t0); osc.stop(t0 + 0.5);
+      idx++;
+    }, 520);
+  }
+  function stopBGM(){
+    if(bgmTimer){ clearInterval(bgmTimer); bgmTimer = null; }
+  }
+
+  function toggleSound(){
+    soundOn = !soundOn;
+    updateSoundButtons();
+    if(soundOn) { ensureAudio(); sfxClick(); }
+  }
+  function toggleBGM(){
+    bgmOn = !bgmOn;
+    updateSoundButtons();
+    if(bgmOn) startBGM(); else stopBGM();
+    if(soundOn) sfxClick();
+  }
+  function updateSoundButtons(){
+    const t1 = document.getElementById("soundBtn");
+    const t2 = document.getElementById("soundBtn2");
+    const b1 = document.getElementById("bgmBtn");
+    const b2 = document.getElementById("bgmBtn2");
+    if(t1) t1.textContent = soundOn ? "🔊 Sound: ON" : "🔇 Sound: OFF";
+    if(t2) t2.textContent = soundOn ? "🔊 Sound: ON" : "🔇 Sound: OFF";
+    if(b1) b1.textContent = bgmOn ? "🛸 BGM: ON" : "🛸 BGM: OFF";
+    if(b2) b2.textContent = bgmOn ? "🛸 BGM: ON" : "🛸 BGM: OFF";
+  }
+
+  /* ======================
+     GAME STATE
+  ====================== */
+  let playerName = "";
+  let currentStage = 1;
+
+  // totals
+  let totalScore = 0;
+  let totalCorrect = 0;
+  let totalWrong = 0;
+  let totalBonus = 0;
+
+  // stage breakdown (for final summary)
+  let s1Correct = 0, s2Correct = 0;
+  let s1Wrong = 0, s2Wrong = 0;
+  let s1Score = 0,   s2Score = 0;
+  let s1Bonus = 0;
+
+  let questionIndex = 0;
+  let correctCount = 0;
+  let comboStreak = 0;
+  let locked = false;
+
+  const PASS_NEED = 24;
+  const TOTAL_PER_STAGE = 30;
+  const DELAY_CORRECT = 2000; // requested slow after ribbons
+  const DELAY_WRONG = 1200;
+
+  const helperPool = ["is","am","are","do","does","did","has","have"];
+
+  function shuffle(arr){
+    const a = [...arr];
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  /* ======================
+     QUESTIONS (answers are lowercase)
+  ====================== */
+  const stage1Questions = [
+    { s: "She ___ a teacher.", a: "is" },
+    { s: "They ___ happy today.", a: "are" },
+    { s: "I ___ hungry now.", a: "am" },
+
+    { s: "He ___ just finished his homework.", a: "has" },
+    { s: "We ___ already finished our work.", a: "have" },
+
+    { s: "The cat ___ sleeping now.", a: "is" },
+    { s: "My friends ___ in the classroom.", a: "are" },
+
+    { s: "___ you usually drink tea in the morning?", a: "do" },
+    { s: "___ he play football every weekend?", a: "does" },
+
+    { s: "___ you understand the rules?", a: "do" },
+    { s: "___ she have a pen?", a: "does" },
+
+    { s: "She ___ studying right now.", a: "is" },
+    { s: "I ___ studying right now.", a: "am" },
+    { s: "We ___ studying right now.", a: "are" },
+
+    { s: "They ___ completed the task already.", a: "have" },
+    { s: "He ___ completed the task already.", a: "has" },
+
+    { s: "He ___ tall.", a: "is" },
+    { s: "I ___ at home today.", a: "am" },
+    { s: "We ___ ready now.", a: "are" },
+
+    { s: "___ they have lunch at school?", a: "do" },
+    { s: "___ he have a bike?", a: "does" },
+
+    { s: "She ___ done her homework already.", a: "has" },
+    { s: "I ___ done my project already.", a: "have" },
+
+    /* Past Simple (DID) – added */
+    { s: "___ you watch TV last night?", a: "did" },
+    { s: "She ___ not go to school yesterday.", a: "did" },
+    { s: "___ he call you yesterday?", a: "did" },
+    { s: "They ___ not finish the test yesterday.", a: "did" },
+    { s: "___ we meet at the park last Sunday?", a: "did" },
+
+    { s: "They ___ not sure about the answer.", a: "are" },
+    { s: "___ you go to the party yesterday?", a: "did" },
+  ];
+
+  const stage2Base = [
+    { s: "She ___ a teacher.", a: "is" },
+    { s: "They ___ playing football now.", a: "are" },
+    { s: "I ___ hungry now.", a: "am" },
+
+    { s: "He ___ just finished his homework.", a: "has" },
+    { s: "We ___ already finished our work.", a: "have" },
+
+    { s: "The cat ___ sleeping now.", a: "is" },
+    { s: "My friends ___ in the classroom.", a: "are" },
+
+    { s: "___ you usually drink tea in the morning?", a: "do" },
+    { s: "___ he play football every weekend?", a: "does" },
+
+    { s: "___ you understand the rules?", a: "do" },
+    { s: "___ she have a pen?", a: "does" },
+
+    { s: "She ___ studying right now.", a: "is" },
+    { s: "I ___ studying right now.", a: "am" },
+    { s: "We ___ studying right now.", a: "are" },
+
+    { s: "They ___ completed the task already.", a: "have" },
+    { s: "He ___ completed the task already.", a: "has" },
+
+    { s: "He ___ tall.", a: "is" },
+    { s: "I ___ at home today.", a: "am" },
+    { s: "We ___ ready now.", a: "are" },
+
+    { s: "___ they have lunch at school?", a: "do" },
+    { s: "___ he have a bike?", a: "does" },
+
+    { s: "She ___ done her homework already.", a: "has" },
+    { s: "I ___ done my project already.", a: "have" },
+
+    /* Past Simple (DID) – added */
+    { s: "___ you watch TV last night?", a: "did" },
+    { s: "She ___ not go to school yesterday.", a: "did" },
+    { s: "___ he call you yesterday?", a: "did" },
+    { s: "They ___ not finish the test yesterday.", a: "did" },
+    { s: "___ we meet at the park last Sunday?", a: "did" },
+
+    { s: "They ___ happy today.", a: "are" },
+    { s: "___ you go to the party yesterday?", a: "did" },
+  ];
+  let stage2Questions = [];
+
+  /* ======================
+     UI HELPERS
+  ====================== */
+
+  function openHowTo(){
+    showScreen('howToScreen');
+    toast('Read the mission guide 📘');
+  }
+  function showCombo(text){
+    const el = document.getElementById("comboBadge");
+    el.textContent = text;
+    el.classList.add("show");
+    setTimeout(()=>el.classList.remove("show"), 900);
+  }
+  function megaConfettiBurst(){
+    const layer = document.getElementById("megaConfetti");
+    if(!layer) return;
+    layer.innerHTML = "";
+    const colors = ["#ffe45c","#22c55e","#ffffff","#f59e0b","#34d399","#f472b6"];
+    for(let i=0;i<140;i++){
+      const c = document.createElement("i");
+      c.style.left = ((i * 7) % 100) + "%";
+      c.style.background = colors[i % colors.length];
+      c.style.animationDuration = (2.4 + (i % 7) * 0.22) + "s";
+      c.style.animationDelay = ((i % 12) * 0.04) + "s";
+      c.style.transform = "rotate(" + ((i * 19) % 360) + "deg)";
+      layer.appendChild(c);
+    }
+    setTimeout(()=>{ layer.innerHTML = ""; }, 5000);
+  }
+  function rewardCombo(){
+    if(comboStreak > 0 && comboStreak % 5 === 0){
+      totalScore += 2;
+      totalBonus += 2;
+      showCombo(`COMBO x${comboStreak} +2`);
+      toast(`Combo Bonus +2 🔥`);
+    }
+  }
+
+  function switchScreen(from, to){
+    document.getElementById(from).classList.remove("active");
+    document.getElementById(to).classList.add("active");
+  }
+  function showScreen(to){
+    document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+    document.getElementById(to).classList.add("active");
+  }
+
+  function toast(msg){
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"), 1000);
+  }
+
+  function ribbonBurst(){
+    const layer = document.getElementById("ribbons");
+    layer.innerHTML = "";
+    for(let i=0;i<26;i++){
+      const r = document.createElement("i");
+      r.style.left = Math.random()*100 + "%";
+      r.style.animationDelay = Math.random()*180 + "ms";
+      layer.appendChild(r);
+    }
+    setTimeout(()=> layer.innerHTML="", 1300);
+  }
+
+  function updateTopBar(total){
+    document.getElementById("playerNameDisplay").textContent = playerName;
+    document.getElementById("stageDisplay").textContent = "Stage " + currentStage;
+    document.getElementById("scoreDisplay").textContent = totalScore;
+    document.getElementById("correctDisplay").textContent = totalCorrect;
+    document.getElementById("wrongDisplay").textContent = totalWrong;
+    document.getElementById("bonusDisplay").textContent = totalBonus;
+    document.getElementById("qDisplay").textContent = `${questionIndex+1}/${total}`;
+  }
+
+  function setStageUI(stage){
+    const orbRow = document.getElementById("orbRow");
+    const ccRow = document.getElementById("ccRow");
+    const changeRow = document.getElementById("changeRow");
+    const hint = document.getElementById("stageHint");
+
+    if(stage === 1){
+      hint.textContent = "Tap the floating ball with the correct helper ⚽✨";
+      orbRow.style.display = "flex";
+      ccRow.style.display = "none";
+      changeRow.style.display = "none";
+    }else{
+      hint.textContent = "Correct ✅ or Change ✏️";
+      orbRow.style.display = "none";
+      ccRow.style.display = "flex";
+      changeRow.style.display = "none";
+    }
+  }
+
+  function renderOrbs(targetId, onPick){
+    const row = document.getElementById(targetId);
+    row.innerHTML = "";
+    const choices = shuffle(helperPool);
+    choices.forEach((word, idx)=>{
+      const o = document.createElement("div");
+      o.className = "orb skyOrb";
+      o.textContent = word;
+      o.style.animationDelay = `${idx * 70}ms, ${700 + idx*70}ms`;
+      o.onclick = ()=>{
+        sfxClick();
+        onPick(word, o);
+      };
+      row.appendChild(o);
+    });
+  }
+
+  function disableOrbs(containerId){
+    document.querySelectorAll(`#${containerId} .orb`).forEach(o=>o.classList.add("disabled"));
+  }
+
+  /* ======================
+     BUILD STAGE 2 (with shown helper maybe wrong)
+  ====================== */
+  function buildStage2(){
+    stage2Questions = stage2Base.map(item=>{
+      const makeWrong = Math.random() < 0.55;
+      let shown = item.a;
+      if(makeWrong){
+        const options = helperPool.filter(x => x !== item.a);
+        shown = options[Math.floor(Math.random()*options.length)];
+      }
+      return { template:item.s, answer:item.a, shown };
+    });
+  }
+
+  /* ======================
+     START / RESET
+  ====================== */
+  function startGame(){
+    ensureAudio();
+    updateSoundButtons();
+    if(bgmOn) startBGM();
+
+    const input = document.getElementById("playerNameInput");
+    const name = input.value.trim();
+    if(!name){
+      toast("Please type your name 🙂");
+      input.focus();
+      return;
+    }
+    playerName = name;
+
+    // reset all
+    currentStage = 1;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    totalScore = 0;
+    totalCorrect = 0;
+    totalWrong = 0;
+    totalBonus = 0;
+
+    s1Correct = s2Correct = 0;
+    s1Wrong = s2Wrong = 0;
+    s1Score = s2Score = 0;
+    s1Bonus = 0;
+
+    buildStage2();
+
+    showScreen("gameScreen");
+    setStageUI(1);
+    loadStage1Question();
+    toast("Mission start! 🚀");
+  }
+
+  function resetAll(){
+    stopBGM();
+    document.getElementById("playerNameInput").value = "";
+    playerName = "";
+
+    currentStage = 1;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    totalScore = 0;
+    totalCorrect = 0;
+    totalWrong = 0;
+    totalBonus = 0;
+
+    s1Correct = s2Correct = 0;
+    s1Wrong = s2Wrong = 0;
+    s1Score = s2Score = 0;
+    s1Bonus = 0;
+
+    stage2Questions = [];
+    showScreen("startScreen");
+    updateSoundButtons();
+    toast("Back to home 🙂");
+  }
+
+  /* ======================
+     STAGE 1
+  ====================== */
+  function loadStage1Question(){
+    locked = false;
+    const q = stage1Questions[questionIndex];
+
+    const box = document.getElementById("sentenceBox");
+    box.innerHTML = `${q.s.replace("___","_____")}<div class="ribbons" id="ribbons"></div>`;
+
+    renderOrbs("orbRow", (word, orb)=>{
+      selectStage1(word, orb);
+    });
+
+    updateTopBar(stage1Questions.length);
+  }
+
+  function addPoint(){
+    totalScore += 1;
+    correctCount += 1;
+    totalCorrect += 1;
+    comboStreak += 1;
+    rewardCombo();
+  }
+
+  function selectStage1(word, orb){
+    if(locked) return;
+    locked = true;
+
+    const q = stage1Questions[questionIndex];
+    const box = document.getElementById("sentenceBox");
+    box.innerHTML = `${q.s.replace("___", word)}<div class="ribbons" id="ribbons"></div>`;
+
+    disableOrbs("orbRow");
+
+    if(word === q.a){
+      addPoint();
+      ribbonBurst();
+      sfxCorrect();
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+      toast("Correct 🎉 +1");
+      setTimeout(()=>nextQuestion(), DELAY_CORRECT);
+    }else{
+      orb.classList.add("fall");
+      totalWrong += 1;
+      comboStreak = 0;
+      sfxWrong();
+      toast("Wrong 😅 +0");
+      setTimeout(()=>nextQuestion(), DELAY_WRONG);
+    }
+  }
+
+  function endStage1(){
+    // store stage1 breakdown (before bonus)
+    s1Correct = totalCorrect;
+    s1Wrong = totalWrong;
+    s1Score = totalScore; // totalScore is only Stage1 at this point (bonus later adds too)
+    if(s1Correct === TOTAL_PER_STAGE){
+      showScreen("bonusScreen");
+      renderBonusStars();
+      return;
+    }
+    showStageSummary(1);
+  }
+
+  function renderBonusStars(){
+    const row = document.getElementById("starsRow");
+    row.innerHTML = "";
+
+    const prizes = shuffle([1,2,3]);
+    prizes.forEach(p=>{
+      const btn = document.createElement("button");
+      btn.className = "starBtn";
+      btn.innerHTML = `<span class="starIcon">⭐</span>mystery bonus`;
+      btn.onclick = ()=>{
+        ensureAudio();
+        row.querySelectorAll("button").forEach(b=>b.disabled=true);
+
+        btn.innerHTML = `<span class="starIcon">⭐</span>+${p}`;
+        s1Bonus = p;
+        totalScore += p;
+
+        sfxCorrect();
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+        toast(`Bonus +${p} ✨`);
+        setTimeout(()=>{
+          // update stage1 stored score including bonus
+          s1Score = s1Correct + s1Bonus;
+          showStageSummary(1);
+        }, 900);
+      };
+      row.appendChild(btn);
+    });
+  }
+
+  function showStageSummary(stage){
+    // stage 1 only summary screen for gating to stage2
+    showScreen("stageSummaryScreen");
+
+    const total = TOTAL_PER_STAGE;
+    const passed = (stage === 1) ? (s1Correct >= PASS_NEED) : (correctCount >= PASS_NEED);
+
+    document.getElementById("stageSummaryTitle").innerHTML = `<span class="glow">STAGE ${stage}</span> SUMMARY`;
+    document.getElementById("stageSummarySub").textContent = `Pass if you get at least ${PASS_NEED}/${total}`;
+
+    document.getElementById("stageSummaryName").textContent = `Player: ${playerName}`;
+    document.getElementById("stageSummaryScore").textContent = totalScore;
+    const stageCorrect = (stage===1 ? s1Correct : (totalCorrect - s1Correct));
+    const stageWrong = (stage===1 ? s1Wrong : (totalWrong - s1Wrong));
+    const stageBonus = (stage===1 ? s1Bonus : (totalBonus - s1Bonus));
+    document.getElementById("stageSummaryCorrect").textContent = `Correct: ${stageCorrect}/${total} • Wrong: ${stageWrong} • Bonus: ${stageBonus}`;
+
+    const badgeWrap = document.getElementById("stagePassBadge");
+    badgeWrap.innerHTML = passed
+      ? `<div class="pill pass">PASS ✅</div>`
+      : `<div class="pill fail">NOT PASS ❌</div>`;
+
+    const btnNext = document.getElementById("btnStageNext");
+    const btnRetry = document.getElementById("btnStageRetry");
+
+    if(stage === 1){
+      btnNext.style.display = passed ? "block" : "none";
+      btnRetry.style.display = passed ? "none" : "block";
+      btnRetry.textContent = "Try Stage 1 Again";
+    }
+  }
+
+  /* ======================
+     STAGE 2
+  ====================== */
+  function loadStage2Question(){
+    locked = false;
+    const q = stage2Questions[questionIndex];
+
+    const box = document.getElementById("sentenceBox");
+    box.innerHTML = `${formatSentence(q.template, q.shown)}<div class="ribbons" id="ribbons"></div>`;
+
+    document.getElementById("btnCorrect").disabled = false;
+    document.getElementById("btnChange").disabled = false;
+
+    const changeRow = document.getElementById("changeRow");
+    changeRow.style.display = "none";
+    changeRow.innerHTML = "";
+
+    updateTopBar(stage2Questions.length);
+  }
+
+  function chooseCorrect(){
+    if(locked) return;
+    locked = true;
+    sfxClick();
+
+    const q = stage2Questions[questionIndex];
+    document.getElementById("btnCorrect").disabled = true;
+    document.getElementById("btnChange").disabled = true;
+
+    if(q.shown === q.answer){
+      addPoint();
+      ribbonBurst();
+      sfxCorrect();
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+      toast("Correct ✅ +1");
+      setTimeout(()=>nextQuestion(), DELAY_CORRECT);
+    }else{
+      totalWrong += 1;
+      comboStreak = 0;
+      sfxWrong();
+      toast("Wrong ❌ +0");
+      setTimeout(()=>nextQuestion(), DELAY_WRONG);
+    }
+  }
+
+  function chooseChange(){
+    if(locked) return;
+    sfxClick();
+
+    document.getElementById("btnCorrect").disabled = true;
+    document.getElementById("btnChange").disabled = true;
+
+    const changeRow = document.getElementById("changeRow");
+    changeRow.style.display = "flex";
+    changeRow.innerHTML = "";
+
+    renderOrbs("changeRow", (word, orb)=>{
+      applyChange(word, orb);
+    });
+
+    toast("Pick the correct helper ✏️");
+  }
+
+  function applyChange(word, orb){
+    if(locked) return;
+    locked = true;
+
+    const q = stage2Questions[questionIndex];
+    const box = document.getElementById("sentenceBox");
+    box.innerHTML = `${formatSentence(q.template, word)}<div class="ribbons" id="ribbons"></div>`;
+
+    disableOrbs("changeRow");
+
+    if(word === q.answer){
+      addPoint();
+      ribbonBurst();
+      sfxCorrect();
+document.body.classList.add("flash");
+setTimeout(()=>document.body.classList.remove("flash"),300);
+      toast("Fixed ✅ +1");
+      setTimeout(()=>nextQuestion(), DELAY_CORRECT);
+    }else{
+      orb.classList.add("fall");
+      totalWrong += 1;
+      comboStreak = 0;
+      sfxWrong();
+      toast("Still wrong ❌ +0");
+      setTimeout(()=>nextQuestion(), DELAY_WRONG);
+    }
+  }
+
+  function endStage2(){
+    // stage2 breakdown:
+    s2Correct = totalCorrect - s1Correct;
+    s2Wrong = totalWrong - s1Wrong;
+    // stage2 score = (totalScore now) - (stage1 total score)
+    s2Score = totalScore - s1Score;
+
+    showFinalSummary();
+  }
+
+  /* ======================
+     FLOW
+  ====================== */
+  function nextQuestion(){
+    questionIndex++;
+
+    if(currentStage === 1){
+      if(questionIndex < stage1Questions.length){
+        loadStage1Question();
+      }else{
+        // Stage 1 ended: store s1Correct (already) if not perfect
+        if(s1Correct === 0) s1Correct = correctCount;
+        if(s1Correct !== TOTAL_PER_STAGE){
+          s1Correct = totalCorrect;
+          s1Wrong = totalWrong;
+          s1Score = totalScore; // stage1 score (no bonus)
+        }
+        endStage1();
+      }
+    }else{
+      if(questionIndex < stage2Questions.length){
+        loadStage2Question();
+      }else{
+        endStage2();
+      }
+    }
+  }
+
+  function restartCurrentStage(){
+    ensureAudio();
+    sfxClick();
+
+    // only used for Stage 1 retry
+    currentStage = 1;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    // reset totals & breakdowns
+    totalScore = 0;
+    totalCorrect = 0;
+    s1Correct = s2Correct = 0;
+    s1Score = s2Score = 0;
+    s1Bonus = 0;
+
+    buildStage2();
+
+    showScreen("gameScreen");
+    setStageUI(1);
+    loadStage1Question();
+    toast("Stage 1 restarted 🎈");
+  }
+
+  function goNextStage(){
+    ensureAudio();
+    sfxClick();
+
+    // move to Stage 2
+    currentStage = 2;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    // keep stage1 totals, but stage2 correctCount starts fresh
+    showScreen("gameScreen");
+    setStageUI(2);
+    loadStage2Question();
+    toast("Entering Stage 2 ✅");
+  }
+
+  /* ======================
+     FINAL SUMMARY (Requested)
+  ====================== */
+  
+function showFinalSummary(){
+    showScreen("finalSummaryScreen");
+
+    const totalQuestions = 60;
+    const accuracy = Math.round((totalCorrect / totalQuestions) * 100);
+    const overallPass = accuracy >= 80;
+
+    document.getElementById("finalName").textContent = `Awarded to: ${playerName}`;
+    document.getElementById("finalTotalScore").textContent = totalScore;
+    document.getElementById("finalTotalCorrect").textContent = `Mission Score Sheet • Correct ${totalCorrect}/60`;
+
+    document.getElementById("certCorrect").textContent = totalCorrect;
+    document.getElementById("certWrong").textContent = totalWrong;
+    document.getElementById("certBonus").textContent = totalBonus;
+    document.getElementById("certAccuracy").textContent = `${accuracy}%`;
+
+    document.getElementById("finalS1").textContent = `${s1Correct}/30`;
+    document.getElementById("finalS2").textContent = `${s2Correct}/30`;
+    document.getElementById("certMissionScore").textContent = totalScore;
+    document.getElementById("certResultWord").textContent = overallPass ? "VERB MASTER" : "TRY AGAIN";
+
+    const passEl = document.getElementById("finalPassText");
+    passEl.textContent = overallPass ? "PASS WITH HONORS ✅" : "KEEP TRAINING 💪";
+    passEl.className = overallPass ? "certPass pass" : "certPass fail";
+
+    document.getElementById("finalSub").textContent = overallPass
+      ? "Outstanding mission complete • Accuracy 80%+ achieved"
+      : "Target to pass: 80% accuracy or more";
+
+    if(overallPass){
+      megaConfettiBurst();
+    }
+  }
+
+  function replayStage2(){
+    ensureAudio();
+    sfxClick();
+
+    // Reset stage2 only: return totals to stage1-only
+    totalScore = s1Score;
+    totalCorrect = s1Correct;
+    totalWrong = s1Wrong;
+    totalBonus = s1Bonus;
+
+    currentStage = 2;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    // refresh stage2 with new random shown/wrong
+    buildStage2();
+
+    showScreen("gameScreen");
+    setStageUI(2);
+    loadStage2Question();
+    toast("Stage 2 replay ✅");
+  }
+
+  function replayAll(){
+    ensureAudio();
+    sfxClick();
+
+    currentStage = 1;
+    questionIndex = 0;
+    correctCount = 0;
+    comboStreak = 0;
+    locked = false;
+
+    totalScore = 0;
+    totalCorrect = 0;
+    totalWrong = 0;
+    totalBonus = 0;
+
+    s1Correct = s2Correct = 0;
+    s1Wrong = s2Wrong = 0;
+    s1Score = s2Score = 0;
+    s1Bonus = 0;
+
+    buildStage2();
+
+    showScreen("gameScreen");
+    setStageUI(1);
+    loadStage1Question();
+    toast("Replay all 🎮");
+  }
+
+  /* ======================
+     INIT
+  ====================== */
+  updateSoundButtons();
+</script>
+</body>
+</html>
